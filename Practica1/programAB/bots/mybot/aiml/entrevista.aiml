@@ -1,0 +1,587 @@
+<?xml version="1.0"
+encoding="UTF-8"?>
+<aiml version="2.0">
+
+<!-- Primera pregunta -->
+<category>
+<pattern>Hablame un poco de ti</pattern>
+<template>
+Me llamo Patricia Cordoba, soy estudiante del Doble Grado de Ingenieria Informatica y Matematicas. No tengo experiencia laboral, pero aprendo rápido y trabajo duro.
+</template>
+</category>
+
+<category>
+<pattern>^ Hablame ^ de ti ^</pattern>
+<template><srai>Hablame un poco de ti</srai></template>
+</category>
+
+<category>
+<pattern>^ Hablame ^ sobre ti ^</pattern>
+<template><srai>Hablame un poco de ti</srai></template>
+</category>
+
+<category>
+<pattern>^ Cuentame ^ de ti ^</pattern>
+<template><srai>Hablame un poco de ti</srai></template>
+</category>
+
+<category>
+<pattern>^ Cuentame ^ sobre ti ^</pattern>
+<template><srai>Hablame un poco de ti</srai></template>
+</category>
+
+<category>
+<pattern>^ decir ^ de ti ^</pattern>
+<template><srai>Hablame un poco de ti</srai></template>
+</category>
+
+<category>
+<pattern>^ decir ^ sobre ti ^</pattern>
+<template><srai>Hablame un poco de ti</srai></template>
+</category>
+
+<!-- Segunda pregunta -->
+<category>
+<pattern>Cual es tu mayor defecto</pattern>
+<template>
+      Soy muy cabezota, una vez que se me mete algo en la cabeza, no paro hasta conseguirlo.
+</template>
+</category>
+
+<category>
+<pattern>^ aspecto negativo ^ tu personalidad ^</pattern>
+<template>
+<srai>Cual es tu mayor defecto</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ mejorarias ^ tu personalidad ^</pattern>
+<template>
+<srai>Cual es tu mayor defecto</srai>
+</template>
+</category>
+
+<!-- Tercera pregunta -->
+<category>
+<pattern>Que aspectos no te gustan de un jefe</pattern>
+<template>
+  No tengo experiencia laboral, asi que nunca he tenido un jefe, pero soy capaz de adaptarme a cualquier metodologia de trabajo.
+</template>
+</category>
+
+<category>
+<pattern>^ no ^ soportar ^ un jefe ^</pattern>
+<template>
+<srai>Que aspectos no te gustan de un jefe</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no soportarias ^ un jefe ^</pattern>
+<template>
+<srai>Que aspectos no te gustan de un jefe</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no te gustan ^ un jefe ^</pattern>
+<template>
+<srai>Que aspectos no te gustan de un jefe</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no toleras ^ un jefe</pattern>
+<template>
+<srai>Que aspectos no te gustan de un jefe</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ cualidades no ^ optimas en un jefe</pattern>
+<template>
+<srai>Que aspectos no te gustan de un jefe</srai>
+</template>
+</category>
+
+<!-- Cuarta pregunta -->
+<category>
+<pattern>Cuales son tus 3 mayores virtudes</pattern>
+<template>
+  Trabajo bien en equipo y aquí puedo desarrollar proyectos con gente nueva, permitiendome convivir en un nuevo entorno de trabajo. Tambien me gusta exponerme a situaciones desconocidas, para comprobar lo que soy capaz de hacer y aprender de las nuevas experiencias, y que mejor experiencia que la de salir al mundo laboral en esta empresa. Mi objetivo es adquirir conocimiento, ser una persona versatil e ilustrada, y creo que puedo ganar mucho trabajando aqui.
+</template>
+</category>
+
+<category>
+<pattern>^ tus ^ virtudes ^</pattern>
+<template>
+<srai>Cuales son tus 3 mayores virtudes</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ tus puntos fuertes ^</pattern>
+<template>
+<srai>Cuales son tus 3 mayores virtudes</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ tus cualidades ^</pattern>
+<template>
+<srai>Cuales son tus 3 mayores virtudes</srai>
+</template>
+</category>
+
+<!-- Quinta pregunta -->
+<category>
+<pattern>Te consideras preparado para desempenar las funciones de este puesto</pattern>
+<template>
+  No tengo la experiencia necesaria que a uno le permite resolver ciertos problemas con solo un golpe de vista, tendre que enfrentarme a ellos de primeras en esta empresa, y fallare una y otra vez hasta conseguirlo, pero si tengo ganas e ilusion, y prometo intentar las cosas todas las veces que haga falta hasta conseguirlo.
+</template>
+</category>
+
+<category>
+<pattern>^ preparado para ^ este puesto</pattern>
+<template>
+  <srai>Te consideras preparado para desempenar las funciones de este puesto</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ cualificado para ^ este puesto</pattern>
+<template>
+  <srai>Te consideras preparado para desempenar las funciones de este puesto</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ competente para ^ este puesto</pattern>
+<template>
+  <srai>Te consideras preparado para desempenar las funciones de este puesto</srai>
+</template>
+</category>
+
+<!-- Sexta pregunta -->
+<category>
+<pattern>Tienes experiencia en la realizacion de proyectos en equipos de trabajo.</pattern>
+<template>
+  Si, durante la carrera he estudiado y realizado practicas en equipo, y los resultados han sido muy buenos. 
+</template>
+</category>
+
+<category>
+<pattern>^ experiencia ^ equipos de trabajo</pattern>
+<template>
+  <srai>Tienes experiencia en la realizacion de proyectos en equipos de trabajo.</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ trabajo+ en equipo ^</pattern>
+<template>
+  <srai>Tienes experiencia en la realizacion de proyectos en equipos de trabajo.</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ trabajo+ en grupo ^</pattern>
+<template>
+  <srai>Tienes experiencia en la realizacion de proyectos en equipos de trabajo.</srai>
+</template>
+</category>
+
+<!-- Septima pregunta -->
+<category>
+<pattern>Realizarias un trabajo que no fuera con tu especialidad</pattern>
+<template>
+  Si, me parece algo muy positivo explorar las distintas posibilidades profesionales que puedan ajustarse a mi perfil, no necesariamente a mis estudios, siempre estoy dispuesta a aprender lo que haga falta.
+</template>
+</category>
+
+<category>
+<pattern>^ no fuera ^ tu especialidad</pattern>
+<template>
+  <srai>Realizarias un trabajo que no fuera con tu especialidad</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no relacionado con tu especialidad</pattern>
+<template>
+  <srai>Realizarias un trabajo que no fuera con tu especialidad</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no relacionado con tus estudios</pattern>
+<template>
+  <srai>Realizarias un trabajo que no fuera con tu especialidad</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no relacionado con tu trabajo</pattern>
+<template>
+  <srai>Realizarias un trabajo que no fuera con tu especialidad</srai>
+</template>
+</category>
+
+<!-- Octava pregunta -->
+<category>
+<pattern>Te desplazarias de manera ocasional a otros lugares</pattern>
+<template>
+  Por supuesto, me encanta viajar.
+</template>
+</category>
+
+<category>
+<pattern>Te desplazarias ^</pattern>
+<template>
+  <srai>Te desplazarias de manera ocasional a otros lugares</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ viajar ^ otros lugares ^</pattern>
+<template>
+  <srai>Te desplazarias de manera ocasional a otros lugares</srai>
+</template>
+</category>
+
+<!-- Novena pregunta -->
+<category>
+<pattern>Te consideras una persona creativa</pattern>
+<template>
+  A veces tengo mis momentos de inspiración, pero creo que soy una persona mas analitica que creativa.
+</template>
+</category>
+
+<category>
+<pattern>^ persona creativa</pattern>
+<template>
+  <srai>Te consideras una persona creativa</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ gran imaginacion ^</pattern>
+<template>
+  <srai>Te consideras una persona creativa</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ ideas originales ^</pattern>
+<template>
+  <srai>Te consideras una persona creativa</srai>
+</template>
+</category>
+
+<!-- Decima pregunta -->
+<category>
+<pattern>Que expectativas tienes de este trabajo</pattern>
+<template>
+  Aprender y ganar experiencia en el mundo laboral. Esta empresa tiene un gran prestigio y creo que puedo disfrutar mucho desarrollandome en un ambiente de trabajo como este.
+</template>
+</category>
+
+<category>
+<pattern>^ expectativa+ ^ este trabajo</pattern>
+<template>
+  <srai>Que expectativas tienes de este trabajo</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ esperas de este trabajo</pattern>
+<template>
+  <srai>Que expectativas tienes de este trabajo</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ conseguir con este trabajo</pattern>
+<template>
+  <srai>Que expectativas tienes de este trabajo</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ te puede aportar ^ este trabajo</pattern>
+<template>
+  <srai>Que expectativas tienes de este trabajo</srai>
+</template>
+</category>
+
+<!-- Undecima pregunta -->
+<category>
+<pattern>Que trabajos has tenido en esta tematica</pattern>
+<template>
+  Ninguno, por eso este trabajo significa tanto para mi, porque es una gran oportunidad para instruirme y cultivarme.
+</template>
+</category>
+
+<category>
+<pattern>^ trabajos ^ esta tematica</pattern>
+<template>
+  <srai>Que trabajos has tenido en esta tematica</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ experiencia en trabajos ^</pattern>
+<template>
+  <srai>Que trabajos has tenido en esta tematica</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ trabajos parecidos ^</pattern>
+<template>
+  <srai>Que trabajos has tenido en esta tematica</srai>
+</template>
+</category>
+
+<!-- Doudecima pregunta -->
+<category>
+<pattern>Normalmente te llevas el trabajo a casa</pattern>
+<template>
+  No, intento organizarme de tal forma que pueda cumplir mis objetivos en horario laboral.
+</template>
+</category>
+
+<category>
+<pattern>^ trabajo a casa ^</pattern>
+<template>
+  <srai>Normalmente te llevas el trabajo a casa</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ trabajar fuera del horario laboral ^</pattern>
+<template>
+  <srai>Normalmente te llevas el trabajo a casa</srai>
+</template>
+</category>
+
+<!-- Decimotercera pregunta -->
+<category>
+<pattern>Cuales son tus aspiraciones salariales</pattern>
+<template>
+  Estoy empezando, así que mi aspiracion salarial actual no es muy alta. Sin embargo, quiero tener la posibilidad de ir escalando con el tiempo, tanto en posicion como en salario.
+</template>
+</category>
+
+<category>
+<pattern>^ aspiraciones salariales ^</pattern>
+<template>
+  <srai>Cuales son tus aspiraciones salariales</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ dinero esperas ganar ^</pattern>
+<template>
+ <srai>Cuales son tus aspiraciones salariales</srai>
+</template>
+</category>
+
+<!-- Decimocuarta pregunta -->
+<category>
+<pattern>Donde te ves dentro de cinco anios</pattern>
+<template>
+  En cinco anios me veo siendo representante de la empresa en el extranjero, o quizas dirigiendo algun area.
+</template>
+</category>
+
+<category>
+<pattern>Donde te ves dentro de 5 anios</pattern>
+<template>
+  <srai>Donde te ves dentro de cinco anios</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ Donde te ves en un futuro ^</pattern>
+<template>
+  <srai>Donde te ves dentro de cinco anios</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ trabajar ^ en un futuro ^</pattern>
+<template>
+  <srai>Donde te ves dentro de cinco anios</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ trabajar ^ cinco anios ^</pattern>
+<template>
+  <srai>Donde te ves dentro de cinco anios</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ trabajar ^ 5 anios ^</pattern>
+<template>
+  <srai>Donde te ves dentro de cinco anios</srai>
+</template>
+</category>
+
+<!-- Decimoquinta pregunta -->
+<category>
+<pattern>No tienes experiencia para el puesto a desempeñar</pattern>
+<template>
+  No tengo experiencia, pero tengo ganas de formarme y pienso trabajar muy duro para compensar los fallos que la falta de experiencia puedan ocasionar. Tengo iniciativa y aprendo rápido, y creo que estoy capacitada para realizar este trabajo.
+</template>
+</category>
+
+<category>
+<pattern>No tienes experiencia ^</pattern>
+<template>
+ <srai>No tienes experiencia para el puesto a desempeñar</srai>
+</template>
+</category>
+
+<category>
+<pattern>No has trabajado ^</pattern>
+<template>
+ <srai>No tienes experiencia para el puesto a desempeñar</srai>
+</template>
+</category>
+
+<category>
+<pattern>Nunca has trabajado ^</pattern>
+<template>
+ <srai>No tienes experiencia para el puesto a desempeñar</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ Te falta experiencia ^</pattern>
+<template>
+ <srai>No tienes experiencia para el puesto a desempeñar</srai>
+</template>
+</category>
+
+<!-- Decimosexta pregunta -->
+<category>
+<pattern>Que sabes de la empresa y el puesto de trabajo</pattern>
+<template>
+ Llevo un tiempo siguiendo los proyectos en los que trabaja la empresa, ya que admiro mucho su trabajo. He leido tambien sobre el nuevo diseno que tienen entre manos, pero la informacion que posee la prensa es escasa, espero poder conocer mucho mas si me contratais, y poner mi granito de arena seria maravilloso.
+</template>
+</category>
+
+<category>
+<pattern>^ nos puedes decir ^ de la empresa y el puesto de trabajo</pattern>
+<template>
+ <srai>Que sabes de la empresa y el puesto de trabajo</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ informado ^ la empresa y el puesto de trabajo</pattern>
+<template>
+ <srai>Que sabes de la empresa y el puesto de trabajo</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ informacion ^ la empresa y el puesto de trabajo</pattern>
+<template>
+ <srai>Que sabes de la empresa y el puesto de trabajo</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ que opinas ^ la empresa y el puesto de trabajo</pattern>
+<template>
+ <srai>Que sabes de la empresa y el puesto de trabajo</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ que piensas ^ la empresa y el puesto de trabajo</pattern>
+<template>
+ <srai>Que sabes de la empresa y el puesto de trabajo</srai>
+</template>
+</category>
+
+<!-- Decimoseptima pregunta -->
+<category>
+<pattern>Que haces cuando consideras que tu jefe no tiene la razon</pattern>
+<template>
+ Intento hacerle ver mi punto de vista, poniendo ejemplos y buscando datos de situaciones parecidas, para que vea como se resolvieron y las consecuencias que tuvieron dichas decisiones.
+</template>
+</category>
+
+<category>
+<pattern>^ jefe ^ no tiene ^ razon ^</pattern>
+<template>
+  <srai>Que haces cuando consideras que tu jefe no tiene la razon</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no tiene ^ razon ^ jefe ^</pattern>
+<template>
+  <srai>Que haces cuando consideras que tu jefe no tiene la razon</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no estas de acuerdo ^ jefe ^</pattern>
+<template>
+  <srai>Que haces cuando consideras que tu jefe no tiene la razon</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ no opinas lo mismo ^ jefe ^</pattern>
+<template>
+  <srai>Que haces cuando consideras que tu jefe no tiene la razon</srai>
+</template>
+</category>
+
+<!-- Decimooctava pregunta -->
+<category>
+<pattern>Por que deberiamos escogerte a ti</pattern>
+<template>
+ Mi madre cocina bien y traeré bizcocho de vez en cuando.
+</template>
+</category>
+
+<category>
+<pattern>^ escogerte a ti ^</pattern>
+<template>
+ <srai>Por que deberiamos escogerte a ti</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ elegirte a ti ^</pattern>
+<template>
+ <srai>Por que deberiamos escogerte a ti</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ tienes de especial ^</pattern>
+<template>
+ <srai>Por que deberiamos escogerte a ti</srai>
+</template>
+</category>
+
+<category>
+<pattern>^ puedes aportar ^</pattern>
+<template>
+ <srai>Por que deberiamos escogerte a ti</srai>
+</template>
+</category>
+
+</aiml>
+
+

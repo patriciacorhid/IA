@@ -1,0 +1,746 @@
+<?xml version="1.0"
+  encoding="UTF-8"?>
+<aiml version="2.0">
+
+  <category>
+    <pattern>De que va (la serie) <set>seriesnetflix</set> </pattern>
+    <template>
+      <srai>decode <map><name><star/></name>sinopsis</map></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>De que va (la serie) <set>seriesprimevideo</set> </pattern>
+    <template>
+      <srai>decode <map><name><star/></name>sinopsis</map></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>Cual es la sipnosis de (la serie) <set>seriesprimevideo</set> </pattern>
+    <template>
+      <srai>decode <map><name><star/></name>sinopsis</map></srai>
+    </template>
+  </category>
+
+  <category>
+    <pattern>De que va (la serie) * </pattern>
+    <template>
+      La serie <set name="serie"><star/></set> no esta en el catalogo. ¿Quieres agregarla?
+      <think>
+	<set name="topic">agregar_serie</set>
+      </think>
+    </template>
+  </category>
+
+  <category>
+    <pattern>Cual es la sipnosis de (la serie) * </pattern>
+    <template>
+      La serie <set name="serie"><star/></set> no esta en el catalogo. ¿Quieres agregarla?
+      <think>
+	<set name="topic">agregar_serie</set>
+      </think>
+    </template>
+  </category>
+
+  <topic name="agregar_serie">
+
+    <category>
+      <pattern>Si ^ </pattern>
+      <template>
+	Ok, crea en la carpeta maps un archivo llamado <get name="serie"/>.txt. Cuando hayas terminado reiniciame y al volver, pideme que agregue la serie <get name="serie"/>.
+	<think>
+	  <set name="topic">unknown</set>
+	</think>
+      </template>
+    </category>
+
+    <category>
+      <pattern>^ No ^ </pattern>
+      <template>
+	Ok.
+	<think>
+	  <set name="topic">unknown</set>
+	</think>
+      </template>
+    </category>
+
+  </topic>
+
+  <!-- Añadir nueva serie -->
+  <category>
+    <pattern>[Anade Agrega] (la serie) * </pattern>
+    <template>
+      Perfecto, te voy a preguntar datos sobre la serie <set name="serie"><star/></set>. Indicame que plataforma la ofrece.
+      <think>
+	<set name="topic">plataforma</set>
+      </think>
+    </template>
+  </category>
+
+  <topic name="plataforma">
+    
+    <category>
+      <pattern>^ netflix ^</pattern>
+      <template>
+	<think>
+	  <addtoset>
+	    <name>seriesnetflix</name>
+	    <key><get name="serie"/></key>
+	  </addtoset>
+	  <set name="topic">genero</set>
+	</think>
+	¿A que genero pertenece?
+      </template>
+    </category>
+
+    <category>
+      <pattern>^ prime video ^</pattern>
+      <template>
+	<think>
+	  <addtoset>
+	    <name>seriesprimevideo</name>
+	    <key><get name="serie"/></key>
+	  </addtoset>
+	  <set name="topic">genero</set>
+	</think>
+	¿A que genero pertenece?
+      </template>
+    </category>
+
+  </topic>
+
+  <topic name="genero">
+
+    <category>
+      <pattern> * </pattern>
+      <template>
+	<think>
+	  <addtomap>
+	    <name><get name="serie"/></name>
+	    <key>genero</key>
+	    <value><srai> CODE_FIELDS <star/></srai></value>
+	  </addtomap>
+	  <set name="topic">sinopsis</set>
+	</think>
+	De que va la serie
+      </template>
+    </category>
+
+  </topic>
+
+  <topic name="sinopsis">
+
+    <category>
+      <pattern> * </pattern>
+      <template>
+	<think>
+	  <addtomap>
+	    <name><get name="serie"/></name>
+	    <key>sinopsis</key>
+	    <value><srai> CODE <star/></srai></value>
+	  </addtomap>
+	  <set name="topic">idiomas</set>
+	</think>
+	Dime la lista de idiomas en los que esta disponible el audio de la serie
+      </template>
+    </category>
+
+  </topic>
+
+  <topic name="idiomas">
+
+    <category>
+      <pattern> * </pattern>
+      <template>
+	<think>
+	  <addtomap>
+	    <name><get name="serie"/></name>
+	    <key>idiomas</key>
+	    <value><srai> CODE_FIELDS <star/></srai></value>
+	  </addtomap>
+	  <set name="topic">subtitulos</set>
+	</think>
+	Dime la lista de subtitulos en los que esta disponible la serie
+      </template>
+    </category>
+
+  </topic>
+
+  <topic name="subtitulos">
+
+    <category>
+      <pattern> * </pattern>
+      <template>
+	<think>
+	  <addtomap>
+	    <name><get name="serie"/></name>
+	    <key>subtitulos</key>
+	    <value><srai> CODE_FIELDS <star/></srai></value>
+	  </addtomap>
+	  <set name="topic">web</set>
+	</think>
+	Si conoces una direccion web de la serie indicamela
+      </template>
+    </category>
+
+  </topic>
+
+  <topic name="web">
+
+    <category>
+      <pattern> No (la se) (se ninguna) </pattern>
+      <template>
+	Ya he creado la informacion basica de la serie, si quieres añadir capitulos.
+	<think>
+	  <set name="topic">agregar_1_capitulo</set>
+	</think>
+      </template>
+    </category>
+
+    <category>
+      <pattern> * </pattern>
+      <template>
+	<think>
+	  <addtomap>
+	    <name><get name="serie"/></name>
+	    <key>web</key>
+	    <value><star/></value>
+	  </addtomap>
+	  <set name="topic">agregar_1_capitulo</set>
+	</think>
+	Ya he creado la informacion basica de la serie, si quieres añadir capitulos.
+      </template>
+    </category>
+
+  </topic>
+
+  <topic name="agregar_1_capitulo">
+
+    <category>
+      <pattern> ^ no ^ </pattern>
+      <template>
+	Ok.
+	<think>
+	  <set name="topic">unknown</set>
+	</think>
+      </template>
+    </category>
+    
+    <!-- Añade primer episodio -->
+    <category>
+      <pattern> Si [Introduce anade agrega] [un el] (nuevo) [capitulo episodio] [de a] la temporada <set>number</set> </pattern>
+      <template>
+	<think>
+	  <set name="temporada"><star index="1"/></set>
+	  <set name="topic">titcap</set>
+	</think>
+	Ok. Dime el título del capitulo.
+      </template>
+    </category>
+  </topic>
+
+
+  <!-- Añade episodio a temporada -->
+
+  <category>
+    <pattern> [Introduce anade agrega] [un el] (nuevo) [capitulo episodio] [de a] la temporada <set>number</set> de * </pattern>
+    <template>
+      <think>
+	<set name="serie"><star index="2"/></set>
+	<set name="temporada"><star index="1"/></set>
+	<set name="topic">titcap</set>
+      </think>
+      Dime el titulo del capitulo de la temporada <get name="temporada"/> de <get name="serie"/> .
+    </template>
+  </category>
+
+  <topic name="titcap">
+
+    <category>
+      <pattern> * </pattern>
+      <template>
+	<think>
+	  <set name="titulo"><srai> CODE <star/></srai></set>
+	  <set name="topic">durcap</set>
+	</think>
+	Dime la duracion del capitulo <get name="titulo"/>.
+      </template>
+    </category>
+    
+  </topic>
+
+  <topic name="durcap">
+
+    <category>
+      <pattern> * </pattern>
+      <template>
+	<think>
+	  <set name="duracion"><star/></set>
+	  <set name="topic">unknown</set>
+
+	  <set var="claves"><readkeys><get name="serie"/></readkeys></set>
+	  <set var="existe"><srai>FINDITEM temporada<get name="temporada"/> IN <get var="claves"/></srai></set>
+	</think>
+	<condition var="existe">
+	  <li value="0">
+	    <think>
+	      <addtomap>
+		<name><get name="serie"/></name>
+		<key>temporada<get name="temporada"/></key>
+		<value></value>
+	      </addtomap>
+	    </think>
+	    Nueva temporada.
+	  </li>
+	  <li>
+	    Temporada disponible.
+	  </li>
+	</condition>
+	<think>
+	  <set var="episodios"><map><name><get name="serie"/></name>temporada<get name="temporada"/></map></set>
+	  <modifymap>
+	    <name><get name="serie"/></name>
+	    <key>temporada<get name="temporada"/></key>
+	    <value><get var="episodios"/>@<get name="titulo"/>@<get name="duracion"/></value>
+	  </modifymap>
+	</think>
+	Este capitulo de <get name="duracion"/> minutos ya esta disponible en la plataforma.
+      </template>
+    </category>
+    
+  </topic>
+
+  <!-- ********************* NIVEL 2 ***************************-->
+  <!-- Indicar los idiomas disponibles -->
+  
+  <category>	
+    <pattern> En que idioma+ esta (la serie) <set>seriesnetflix</set></pattern>	
+    <template>
+      <think>	
+	<set var="tmp"><map><name><star/></name>idiomas</map></set>
+      </think>
+      Los idiomas en los que esta la serie <star/> son: <srai>ANIADEY <srai> DECODE_FIELDS <get var="tmp"/></srai></srai>		
+    </template>	
+  </category>
+
+  <category>	
+    <pattern> En que idioma+ esta (la serie) <set>seriesprimevideo</set></pattern>	
+    <template>
+      <think>	
+	<set var="tmp"><map><name><star/></name>idiomas</map></set>
+      </think>
+      Los idiomas en los que esta la serie <star/> son: <srai>ANIADEY <srai> DECODE_FIELDS <get var="tmp"/></srai></srai>	
+    </template>	
+  </category>
+
+  <!-- Indicar los subtitulos disponibles -->
+
+   <category>	
+    <pattern> En que idioma+ estan disponibles los subtitulos de (la serie) <set>seriesnetflix</set></pattern>	
+    <template>
+      <think>	
+	<set var="tmp"><map><name><star/></name>subtitulos</map></set>
+      </think>
+      Los idiomas en los que estan los subtitulos de la serie <star/> son: <srai>ANIADEY <srai> DECODE_FIELDS <get var="tmp"/></srai></srai>		
+    </template>	
+   </category>
+
+   <category>	
+    <pattern> En que idioma+ estan disponibles los subtitulos de (la serie) <set>seriesprimevideo</set></pattern>	
+    <template>
+      <think>	
+	<set var="tmp"><map><name><star/></name>subtitulos</map></set>
+      </think>
+      Los idiomas en los que estan los subtitulos de la serie <star/> son: <srai>ANIADEY <srai> DECODE_FIELDS <get var="tmp"/></srai></srai>	
+    </template>	
+  </category>
+
+  <!-- Preguntar por idioma -->
+  <!-- MODIFICAR LO DE LOS IDIOMAS AL INTRODUCIR SERIE -->
+
+  <category>
+    <pattern> ^ <set>seriesnetflix</set> esta en <set>idioma</set> </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>idiomas</map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="idioma"><first><get var="lista"/></first></set>
+	<condition var="idioma">
+	  <li value="NIL"><set var="solucion">No, no esta en <star index="3"/> </set>
+	  </li>
+	  <li><value><star index="3"/></value>
+	  <set var="solucion">Si, <star	index="2"/> esta en <star index="3"/></set>
+	  </li>
+	  <li>
+	    <set var="lista"><rest><get	var="lista"/></rest></set>
+	    <set var="idioma"><first><get var="lista"/></first></set>
+	    <loop/>
+	  </li>
+	</condition>
+      </think>
+      <get var="solucion"/>
+    </template>
+  </category>
+
+  <category>
+    <pattern> <set>seriesprimevideo</set> esta en <set>idioma</set> </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>idiomas</map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="idioma"><first><get var="lista"/></first></set>
+	<condition var="idioma">
+	  <li value="NIL"><set var="solucion">No, no esta en <star index="3"/> </set>
+	  </li>
+	  <li><value><star index="3"/></value>
+	  <set var="solucion">Si, <star	index="2"/> esta en <star index="3"/></set>
+	  </li>
+	  <li>
+	    <set var="lista"><rest><get	var="lista"/></rest></set>
+	    <set var="idioma"><first><get var="lista"/></first></set>
+	    <loop/>
+	  </li>
+	</condition>
+      </think>
+      <get var="solucion"/>
+    </template>
+  </category>
+
+  <!-- Contar idiomas -->
+
+  <category>
+    <pattern> ^ cuantos idiomas esta (disponible) (la serie) <set>seriesnetflix</set> ^ </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>idiomas</map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="cantidad"><srai>COUNT <get var="lista"/></srai></set>
+      </think>
+      Lista de idiomas en los que está disponible: <get var="lista"/>.
+      La serie <star index="2"/> esta disponible en <get var="cantidad"/> idiomas.
+    </template>
+  </category>
+  
+  <category>
+    <pattern> ^ cuantos idiomas esta (disponible) (la serie) <set>seriesprimevideo</set> ^ </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>idiomas</map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="cantidad"><srai>COUNT <get var="lista"/></srai></set>
+      </think>
+      Lista de idiomas en los que está disponible: <get var="lista"/>.
+      La serie <star index="2"/> esta disponible en <get var="cantidad"/> idiomas.
+    </template>
+  </category>
+
+  <!-- Contar subtitulos -->
+  
+  <category>
+    <pattern> ^ cuantos idiomas hay (disponibles) subtitulos de (la serie) <set>seriesnetflix</set> ^ </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>subtitulos</map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="cantidad"><srai>COUNT <get var="lista"/></srai></set>
+      </think>
+      Lista de idiomas en los hay subtitulos disponibles: <get var="lista"/>.
+      La serie <star index="2"/> tiene subtitulos en <get var="cantidad"/> idiomas diferentes.
+    </template>
+  </category>
+  
+  <category>
+    <pattern> ^ cuantos idiomas hay (disponibles) subtitulos de (la serie) <set>seriesprimevideo</set> ^ </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>subtitulos</map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="cantidad"><srai>COUNT <get var="lista"/></srai></set>
+      </think>
+      Lista de idiomas en los hay subtitulos disponibles: <get var="lista"/>.
+      La serie <star index="2"/> tiene subtitulos en <get var="cantidad"/> idiomas diferentes.
+    </template>
+  </category>
+
+  <!-- Contar capitulos temporada -->
+  
+  <category>
+    <pattern> Cuantos capitulos tiene la temporada <set>number</set> de (la serie) <set>seriesnetflix</set> ^ </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>temporada<star/></map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="cap"><first><get var="lista"/></first></set>
+	<set var="lista2"></set>
+      </think>
+      <condition var="cap">
+	<li value="NIL"></li>
+	<li>
+	  <think>
+	    <set var="lista2"><get var="lista2"/> <get var="cap"/></set>
+	    <set var="lista"><rest><get	var="lista"/></rest></set>
+	    <set var="lista"><rest><get	var="lista"/></rest></set>
+	    <set var="cap"><first><get var="lista"/></first></set>
+	  </think>
+	  <loop/>
+	</li>
+      </condition>
+      <think>
+	<set var="cantidad"><srai>COUNT <get var="lista2"/></srai></set>
+      </think>
+      La temporada <star/> tiene <get var="cantidad"/> capitulos.
+    </template>
+  </category>
+
+  <category>
+    <pattern> Cuantos capitulos tiene la temporada <set>number</set> de (la serie) <set>seriesprimevideo</set> ^ </pattern>
+    <template>
+      <think>
+	<set var="lista"><map><name><star index="2"/></name>temporada<star/></map></set>
+	<set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="cap"><first><get var="lista"/></first></set>
+	<set var="lista2"></set>
+      </think>
+      <condition var="cap">
+	<li value="NIL"></li>
+	<li>
+	  <think>
+	    <set var="lista2"><get var="lista2"/> <get var="cap"/></set>
+	    <set var="lista"><rest><get	var="lista"/></rest></set>
+	    <set var="lista"><rest><get	var="lista"/></rest></set>
+	    <set var="cap"><first><get var="lista"/></first></set>
+	  </think>
+	  <loop/>
+	</li>
+      </condition>
+      <think>
+	<set var="cantidad"><srai>COUNT <get var="lista2"/></srai></set>
+      </think>
+      La temporada <star/> tiene <get var="cantidad"/> capitulos.
+    </template>
+  </category>
+
+  <!-- Contar capitulos totales -->
+
+  <!--**************-->
+  <!-- Devuelve el número de capitulos de una temporada (para poder sumar el numero)-->
+  <category>
+    <pattern> aux numero capitulos temp <set>number</set> <set>seriesnetflix</set> </pattern>
+    <template>
+      <think>
+      <set var="lista"><srai>Cuantos capitulos tiene la temporada <star/> de <star index="2"/></srai></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><first><get var="lista"/></first></set>
+      </think>
+      <get var="lista"/>
+    </template>
+  </category>
+
+  <category>
+    <pattern> aux numero capitulos temp <set>number</set> <set>seriesprimevideo</set> </pattern>
+    <template>
+      <think>
+      <set var="lista"><srai>Cuantos capitulos tiene la temporada <star/> de <star index="2"/></srai></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+      <set var="lista"><first><get var="lista"/></first></set>
+      </think>
+      <get var="lista"/>
+    </template>
+  </category>
+
+  <!--**************-->
+
+  <category>
+    <pattern> Cuantos capitulos tiene (la serie) <set>seriesnetflix</set> </pattern>
+    <template>
+      <think>
+      <set var="temp"><map name="successor">0</map></set>
+      <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+      <set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+      <set var="cantidad_acum">0</set>
+      <condition var="lista">
+	<li value="unknown"></li>
+	<li>
+	  <set var="cantidad"><srai> aux numero capitulos temp <get var="temp"/> <star/> </srai></set>
+	 <set var="cantidad_acum"> <srai> <get var="cantidad_acum"/> mas <get var="cantidad"/> </srai> </set>  <!--Sumo valor acumulado en iteracion anterior-->
+	  <set var="temp"><map name="successor"><get var="temp"/></map></set>
+	  <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+	<loop/>
+	</li>
+      </condition>
+      </think>
+      La serie <star/> tiene <get var="cantidad_acum"/> capitulos.
+    </template>
+  </category>
+
+  <category>
+    <pattern> Cuantos capitulos tiene (la serie) <set>seriesprimevideo</set> </pattern>
+    <template>
+      <think>
+      <set var="temp"><map name="successor">0</map></set>
+      <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+      <set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+      <set var="cantidad_acum">0</set>
+      <condition var="lista">
+	<li value="unknown"></li>
+	<li>
+	  <set var="cantidad"><srai> aux numero capitulos temp <get var="temp"/> <star/> </srai></set>
+	 <set var="cantidad_acum"> <srai> <get var="cantidad_acum"/> mas <get var="cantidad"/> </srai> </set>  <!--Sumo valor acumulado en iteracion anterior-->
+	  <set var="temp"><map name="successor"><get var="temp"/></map></set>
+	  <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+	<loop/>
+	</li>
+      </condition>
+      </think>
+      La serie <star/> tiene <get var="cantidad_acum"/> capitulos.
+    </template>
+  </category>
+
+  <!-- Numero de temporadas que tiene la serie -->
+
+  <category>
+    <pattern> Cuantas temporadas tiene (la serie) <set>seriesnetflix</set> ^ </pattern>
+    <template>
+      <think>
+      <set var="temp"><map name="successor">0</map></set>
+      <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+      <set var="cantidad_acum">0</set>
+      <condition var="lista">
+	<li value="unknown"></li>
+	<li>
+	 <set var="cantidad_acum"> <srai> <get var="cantidad_acum"/> mas 1 </srai> </set>  <!--Sumo valor acumulado mas 1-->
+	  <set var="temp"><map name="successor"><get var="temp"/></map></set>
+	  <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+	<loop/>
+	</li>
+      </condition>
+      </think>
+      La serie <star/> tiene <get var="cantidad_acum"/> temporadas.
+    </template>
+  </category>
+
+  <category>
+    <pattern> Cuantas temporadas tiene (la serie) <set>seriesprimevideo</set> ^ </pattern>
+    <template>
+      <think>
+      <set var="temp"><map name="successor">0</map></set>
+      <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+      <set var="cantidad_acum">0</set>
+      <condition var="lista">
+	<li value="unknown"></li>
+	<li>
+	 <set var="cantidad_acum"> <srai> <get var="cantidad_acum"/> mas 1 </srai> </set>  <!--Sumo valor acumulado mas 1-->
+	  <set var="temp"><map name="successor"><get var="temp"/></map></set>
+	  <set var="lista"><map><name><star/></name>temporada<get var="temp"/></map></set>
+	<loop/>
+	</li>
+      </condition>
+      </think>
+      La serie <star/> tiene <get var="cantidad_acum"/> temporadas.
+    </template>
+  </category>
+
+  <!-- Nombre de un capitulo concreto de una serie -->
+
+  <category>
+    <pattern> Cual es el capitulo <set>number</set> de la temporada <set>number</set> de (la serie) <set>seriesnetflix</set> ^ </pattern>
+    <template>
+      <think>
+      <set var="lista"><map><name><star index="3"/></name>temporada<star index="2"/></map></set>
+      <set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="vueltas"><star/></set>
+      <condition var="vueltas">
+	<li value="1"></li>
+	<li>
+	  <set var="vueltas"><map name="predecessor"><get var="vueltas"/></map></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	 <loop/>
+	</li>
+      </condition>
+      <set var="cap"><first><get var="lista"/></first></set>
+      </think>
+      El capitulo <star/> de la serie es <get var="cap"/>.
+    </template>
+  </category>
+
+  <category>
+    <pattern> Cual es el capitulo <set>number</set> de la temporada <set>number</set> de (la serie) <set>seriesprimevideo</set> ^ </pattern>
+    <template>
+      <think>
+      <set var="lista"><map><name><star index="3"/></name>temporada<star index="2"/></map></set>
+      <set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+	<set var="vueltas"><star/></set>
+      <condition var="vueltas">
+	<li value="1"></li>
+	<li>
+	  <set var="vueltas"><map name="predecessor"><get var="vueltas"/></map></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	 <loop/>
+	</li>
+      </condition>
+      <set var="cap"><first><get var="lista"/></first></set>
+      </think>
+      El capitulo <star/> de la serie es <get var="cap"/>.
+    </template>
+  </category>
+
+  <!-- Nombre de un capitulo concreto de una serie -->
+
+  <category>
+    <pattern> Cuanto dura el capitulo <set>number</set> de la temporada <set>number</set> de (la serie) <set>seriesnetflix</set> ^ </pattern>
+    <template>
+      <think>
+      <set var="lista"><map><name><star index="3"/></name>temporada<star index="2"/></map></set>
+      <set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+	<set var="vueltas"><star/></set>
+      <condition var="vueltas">
+	<li value="1"></li>
+	<li>
+	  <set var="vueltas"><map name="predecessor"><get var="vueltas"/></map></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	 <loop/>
+	</li>
+      </condition>
+      <set var="dur"><first><get var="lista"/></first></set>
+      </think>
+      El capitulo <star/> dura <get var="dur"/> min.
+    </template>
+  </category>
+
+    <category>
+    <pattern> Cuanto dura el capitulo <set>number</set> de la temporada <set>number</set> de (la serie) <set>seriesprimevideo</set> ^ </pattern>
+    <template>
+      <think>
+      <set var="lista"><map><name><star index="3"/></name>temporada<star index="2"/></map></set>
+      <set var="lista"><srai>decode_fields <get var="lista"/></srai></set>
+      <set var="lista"><rest><get var="lista"/></rest></set>
+	<set var="vueltas"><star/></set>
+      <condition var="vueltas">
+	<li value="1"></li>
+	<li>
+	  <set var="vueltas"><map name="predecessor"><get var="vueltas"/></map></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	  <set var="lista"><rest><get var="lista"/></rest></set>
+	 <loop/>
+	</li>
+      </condition>
+      <set var="dur"><first><get var="lista"/></first></set>
+      </think>
+      El capitulo <star/> dura <get var="dur"/> minutos.
+    </template>
+  </category>
+  
+</aiml>
+
+
