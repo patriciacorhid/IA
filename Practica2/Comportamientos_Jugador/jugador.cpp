@@ -74,6 +74,21 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	}else {
 	   // Estoy en el nivel 2
 	  Action sigAccion;
+
+	  switch(ultimaAccion){
+	  case actTURN_R: brujula = (brujula+1)%4;
+	    break;
+	  case actTURN_L: brujula = (brujula+3)%4;
+	    break;
+	  case actFORWARD:
+	    switch(brujula){
+	    case 0: fil--; break;
+	    case 1: col++; break;
+	    case 2: fil++; break;
+	    case 3: col--; break;
+	    }
+	    break;
+	  }
 	  
 	  if(!pos){
 
@@ -141,16 +156,18 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	      cout<<"Se mi posición\n";
 	      fil = sensores.mensajeF;
 	      col = sensores.mensajeC;
+	      actual.fila = fil;
+	      actual.columna = col;
 	      destino.fila = sensores.destinoF;
 	      destino.columna = sensores.destinoC;
-	      ultimaAccion = actIDLE;
+	      ultimaAccion = sigAccion;
 	      pos = true;
 	    }
 	  } else {
-	    
-
+	    mapaResultado[fil][col]=sensores.terreno[0];
 	  }
 
+	  ultimaAccion=sigAccion;
 	  cout<<"Siguiente Acción"<< sigAccion <<"\n";
 	  return sigAccion;
 	  
