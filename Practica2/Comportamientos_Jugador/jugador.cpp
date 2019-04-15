@@ -71,14 +71,91 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	  //Recordar la última accion
 	  ultimaAccion = sigAccion;
 	  return sigAccion;
-	}
-	
-	else {
-		// Estoy en el nivel 2
-		cout << "Aún no implementado el nivel 2" << endl;
-	}
+	}else {
+	   // Estoy en el nivel 2
+	  Action sigAccion;
+	  
+	  if(!pos){
 
-  return accion;
+	    cout<<"HayPlan:" << hayPlan <<"\n";
+
+	    for(int i=1; i<4 && hayPlan==false; i++){
+	      cout<<"Sensor "<< i << ": " << sensores.terreno[i] <<"\n";
+	    }
+	    
+	    for(int i=1; i<4 && hayPlan==false; i++){
+	      cout<<"en el bucle\n";
+	      if(sensores.terreno[i]=='K'){
+		cout<<"Casilla a la vista\n";
+		hayPlan=true;
+		switch(i){
+		case 1:
+		  cout<<"Caso1"<< sensores.terreno[1] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_L);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 2:
+		  cout<<"Caso2"<< sensores.terreno[2] <<"\n";
+		  plan.push_back(actFORWARD);
+		  break;
+		case 3:
+		  cout<<"Caso3"<< sensores.terreno[3] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_R);
+		  plan.push_back(actFORWARD);
+		  break;
+		}
+	      }
+	    }
+
+	    for(int i=0; i<plan.size(); i++){
+	      cout << plan.front();
+	    }
+
+	    if (hayPlan and plan.size()>0 and plan.front()==actFORWARD and (sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a')){
+	      cout<<"Obstaculo en el plan\n";
+	      hayPlan = false;
+	      sigAccion = actTURN_R;
+	    } else if(hayPlan and plan.size()>0){
+	      cout<<"Siguiendo el plan\n";
+	      sigAccion = plan.front();
+	      plan.erase(plan.begin());
+	    } else if(hayPlan and plan.size()==0){
+	      hayPlan = false;
+	      cout << "Final plan" <<sensores.terreno[0];
+	      sigAccion = actIDLE;
+	    } else if(sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a'){
+	      cout<<"Obstaculo\n";
+	      sigAccion = actTURN_R;
+	    } else {
+	      cout<<"A lo loco\n";
+	      sigAccion = actFORWARD;
+	    }
+
+	    if (sensores.terreno[0]=='K'){
+	      cout<<"Casilla PK\n";
+	    }
+
+	    if (sensores.mensajeF != -1){
+	      cout<<"Se mi posición\n";
+	      fil = sensores.mensajeF;
+	      col = sensores.mensajeC;
+	      destino.fila = sensores.destinoF;
+	      destino.columna = sensores.destinoC;
+	      ultimaAccion = actIDLE;
+	      pos = true;
+	    }
+	  } else {
+	    
+
+	  }
+
+	  cout<<"Siguiente Acción"<< sigAccion <<"\n";
+	  return sigAccion;
+	  
+	}
+	return accion;
 }
 
 

@@ -22,7 +22,7 @@ class ComportamientoJugador : public Comportamiento {
       destino.orientacion = -1;
       ultimaAccion = actIDLE;
       hayPlan=false;
-      coste = 0;
+      pos=false;
     }
     ComportamientoJugador(std::vector< std::vector< unsigned char> > mapaR) : Comportamiento(mapaR) {
       // Inicializar Variables de Estado
@@ -33,7 +33,7 @@ class ComportamientoJugador : public Comportamiento {
       destino.orientacion = -1;
       ultimaAccion = actIDLE;
       hayPlan=false;
-      coste = 0;
+      pos=false;
     }
     ComportamientoJugador(const ComportamientoJugador & comport) : Comportamiento(comport){}
     ~ComportamientoJugador(){}
@@ -51,7 +51,7 @@ private:
   
   Action ultimaAccion;
   bool hayPlan;
-  int coste;
+  bool pos;
   
 
   // Métodos privados de la clase
