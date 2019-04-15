@@ -136,10 +136,10 @@ bool ComportamientoJugador::HayObstaculoDelante(estado &st){
 
 	// Miro si en esa casilla hay un obstaculo infranqueable
 	if (!EsObstaculo(mapaResultado[fil][col])){
-		// No hay obstaculo, actualizo el parámetro st poniendo la casilla de delante.
-    st.fila = fil;
-		st.columna = col;
-		return false;
+	  // No hay obstaculo, actualizo el parámetro st poniendo la casilla de delante.
+	  st.fila = fil;
+	  st.columna = col;
+	  return false;
 	}
 	else{
 	  return true;
@@ -147,11 +147,26 @@ bool ComportamientoJugador::HayObstaculoDelante(estado &st){
 }
 
 
-
-
 struct nodo{
-	estado st;
-	list<Action> secuencia;
+  estado st;
+  list<Action> secuencia;
+  int coste;
+};
+
+int ComportamientoJugador:: calculaCoste(estado st){
+  switch(mapaResultado[st.fila][st.columna]){
+  case 'T': return 2;
+  case 'B': return 5;
+  case 'A': return 10;
+  default: return 1;
+  }
+}
+
+struct CompareCost { 
+    bool operator()(nodo const& n1, nodo const& n2) 
+    { 
+        return n1.coste > n2.coste; 
+    } 
 };
 
 struct ComparaEstados{
@@ -308,7 +323,78 @@ bool ComportamientoJugador::pathFinding_Anchura(const estado &origen, const esta
 }
 
 
-bool ComportamientoJugador::pathFinding_CosteUniforme(const estado &origen, const estado &destino, list<Action> &plan){}
+bool ComportamientoJugador::pathFinding_CosteUniforme(const estado &origen, const estado &destino, list<Action> &plan){
+	//Borro la lista
+	cout << "Calculando plan\n";
+	plan.clear();
+	set<estado,ComparaEstados> generados; // Lista de Cerrados
+	priority_queue<nodo, vector<nodo>, CompareCost> cola;											// Lista de Abiertos
+
+  nodo current;
+	current.st = origen;
+	current.secuencia.empty();
+	current.coste = calculaCoste(current.st);
+	
+	cola.push(current);
+
+  while (!cola.empty() and (current.st.fila!=destino.fila or current.st.columna != destino.columna)){
+    
+		cola.pop();
+		generados.insert(current.st);
+
+		// Generar descendiente de girar a la derecha
+		nodo hijoTurnR = current;
+		hijoTurnR.st.orientacion = (hijoTurnR.st.orientacion+1)%4;
+		if (generados.find(hijoTurnR.st) == generados.end()){
+			hijoTurnR.secuencia.push_back(actTURN_R);
+			hijoTurnR.coste += calculaCoste(hijoTurnR.st);
+			cola.push(hijoTurnR);
+
+		}
+
+		// Generar descendiente de girar a la izquierda
+		nodo hijoTurnL = current;
+		hijoTurnL.st.orientacion = (hijoTurnL.st.orientacion+3)%4;
+		if (generados.find(hijoTurnL.st) == generados.end()){
+			hijoTurnL.secuencia.push_back(actTURN_L);
+			hijoTurnL.coste += calculaCoste(hijoTurnL.st);
+			cola.push(hijoTurnL);
+		}
+
+		// Generar descendiente de avanzar
+		nodo hijoForward = current;
+		if (!HayObstaculoDelante(hijoForward.st)){
+			if (generados.find(hijoForward.st) == generados.end()){
+				hijoForward.secuencia.push_back(actFORWARD);
+				hijoForward.coste += calculaCoste(hijoForward.st);
+				cola.push(hijoForward);
+			}
+		}
+
+		// Tomo el siguiente valor de la pila
+		if (!cola.empty()){
+			current = cola.top();
+		}
+	}
+
+  cout << "Terminada la busqueda\n";
+
+	if (current.st.fila == destino.fila and current.st.columna == destino.columna){
+		cout << "Cargando el plan\n";
+		plan = current.secuencia;
+		cout << "Longitud del plan: " << plan.size() << endl;
+		PintaPlan(plan);
+		// ver el plan en el mapa
+		VisualizaPlan(origen, plan);
+		return true;
+	}
+	else {
+		cout << "No encontrado plan\n";
+	}
+
+
+	return false;
+}
 
 
 // Sacar por la términal la secuencia del plan obtenido

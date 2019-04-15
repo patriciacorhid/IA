@@ -62,6 +62,7 @@ private:
 
   void PintaPlan(list<Action> plan);
   bool HayObstaculoDelante(estado &st);
+  int  calculaCoste(estado st);
 
 };
 
