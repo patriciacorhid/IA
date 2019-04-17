@@ -71,33 +71,30 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	  //Recordar la última accion
 	  ultimaAccion = sigAccion;
 	  return sigAccion;
-	}else {
+	  
+	} else {
 	   // Estoy en el nivel 2
 	  Action sigAccion;
 
-	  switch(ultimaAccion){
-	  case actTURN_R: brujula = (brujula+1)%4;
-	    break;
-	  case actTURN_L: brujula = (brujula+3)%4;
-	    break;
-	  case actFORWARD:
-	    switch(brujula){
-	    case 0: fil--; break;
-	    case 1: col++; break;
-	    case 2: fil++; break;
-	    case 3: col--; break;
-	    }
-	    break;
-	  }
-	  
+	  //Si no he llegado a una casilla PK y no sé mi posición
 	  if(!pos){
 
+	    //Actualizo la brújula
+	    switch(ultimaAccion){
+	    case actTURN_R: brujula = (brujula+1)%4;
+	      break;
+	    case actTURN_L: brujula = (brujula+3)%4;
+	      break;
+	    }
+
+	    //Comprobación de plan y sensores
 	    cout<<"HayPlan:" << hayPlan <<"\n";
 
 	    for(int i=1; i<4 && hayPlan==false; i++){
 	      cout<<"Sensor "<< i << ": " << sensores.terreno[i] <<"\n";
 	    }
-	    
+
+	    //Si tengo cerca una casilla PK hago un plan para ir a por ella
 	    for(int i=1; i<4 && hayPlan==false; i++){
 	      cout<<"en el bucle\n";
 	      if(sensores.terreno[i]=='K'){
@@ -124,34 +121,35 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	      }
 	    }
 
-	    for(int i=0; i<plan.size(); i++){
-	      cout << plan.front();
-	    }
-
-	    if (hayPlan and plan.size()>0 and plan.front()==actFORWARD and (sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a')){
+	    //Si hay plan intento seguirlo, siempre que no haya obstáculos 
+	    if (hayPlan and plan.size()>0 and plan.front()==actFORWARD and (sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a')){ //Obstáculo en el plan
 	      cout<<"Obstaculo en el plan\n";
 	      hayPlan = false;
 	      sigAccion = actTURN_R;
-	    } else if(hayPlan and plan.size()>0){
+	    } else if(hayPlan and plan.size()>0){ //Siguiendo el plan
 	      cout<<"Siguiendo el plan\n";
 	      sigAccion = plan.front();
 	      plan.erase(plan.begin());
-	    } else if(hayPlan and plan.size()==0){
+	    } else if(hayPlan and plan.size()==0){ //Fin del plan
 	      hayPlan = false;
 	      cout << "Final plan" <<sensores.terreno[0];
 	      sigAccion = actIDLE;
 	    } else if(sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a'){
+	      //Sin plan me encuentro un obstáculo
 	      cout<<"Obstaculo\n";
 	      sigAccion = actTURN_R;
-	    } else {
+	    } else { //Avanzo sin plan
 	      cout<<"A lo loco\n";
 	      sigAccion = actFORWARD;
 	    }
 
+	    /*
 	    if (sensores.terreno[0]=='K'){
 	      cout<<"Casilla PK\n";
 	    }
+	    */
 
+	    //Si he llegado a una casilla PK, guardo la información
 	    if (sensores.mensajeF != -1){
 	      cout<<"Se mi posición\n";
 	      fil = sensores.mensajeF;
@@ -160,11 +158,123 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	      actual.columna = col;
 	      destino.fila = sensores.destinoF;
 	      destino.columna = sensores.destinoC;
-	      ultimaAccion = sigAccion;
 	      pos = true;
 	    }
+
+	    //Sé mi posición
 	  } else {
+
+	    //cout << " Estoy en el else, pos: " << pos << endl;
+	    cout << "hayPlan: " << hayPlan << endl;
+	    
+	    //Actualizo la brújula
+	    switch(ultimaAccion){
+	    case actTURN_R: brujula = (brujula+1)%4;
+	      break;
+	    case actTURN_L: brujula = (brujula+3)%4;
+	      break;
+	    case actFORWARD:
+	      switch(brujula){
+	      case 0: fil--; break;
+	      case 1: col++; break;
+	      case 2: fil++; break;
+	      case 3: col--; break;
+	      }
+	      break;
+	    }
+
+	    //Actualizo el mapa
 	    mapaResultado[fil][col]=sensores.terreno[0];
+
+	    //Compruebo que el destino no lo han cambiado (Los sensores funcionan siempre)
+	    if (sensores.destinoF != destino.fila or sensores.destinoC != destino.columna){
+	      //cout << "Recalculando objetivo" << endl;
+	      destino.fila = sensores.destinoF;
+	      destino.columna = sensores.destinoC;
+	      hayPlan = false;
+	    }
+
+	    //Si no hay plan, calculo uno (búsqueda en anchura)
+	    if(!hayPlan){
+	      //cout << "Buscando plan"<< endl;
+	      actual.fila = fil;
+	      actual.columna = col;
+	      actual.orientacion = brujula;
+	      hayPlan = pathFinding (sensores.nivel, actual, destino, plan);
+	    }
+
+	    cout << "Tras buscar plan. hayPlan: " << hayPlan << endl;
+
+	    int aux_fil, aux_col;
+	    if(hayPlan and plan.size()>0){ //Hay plan y hay que seguirlo
+	      cout<< "Siguiendo el plan hacia el objetivo" <<endl;
+	      sigAccion = plan.front();
+	      plan.erase(plan.begin());
+	      //Si me encuentro con un obstáculo en el plan, giro y descarto el plan
+	      if (sigAccion==actFORWARD and (sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a')){
+	        switch(brujula){
+		case 0:
+		  aux_fil = fil-1;
+		  aux_col = col;
+		  break;
+		case 1:
+		  aux_fil = fil;
+		  aux_col = col+1;
+		  break;
+		case 2:
+		  aux_fil = fil+1;
+		  aux_col = col;
+		  break;
+		case 3:
+		  aux_fil = fil;
+		  aux_col = col-1;
+		  break;
+		}
+		mapaResultado[aux_fil][aux_col]=sensores.terreno[2]; //Actualizo el mapa
+		cout<<"Obstaculo en la busqueda en anchura\n";
+		if (sensores.superficie[2]=='a'){ //Si es aldeano, me espero a que se aparte
+		  cout<<"Aldeano\n";
+		  sigAccion = actIDLE;
+		} else { //Si es muro recalculo el plan
+		  hayPlan = false;
+		  sigAccion = actTURN_R;
+		}
+	      }
+	    } else { //No hay plan y se activa el comportamiento reactivo
+	      hayPlan = false;
+	      if (sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a'){
+		//Si me encuentro un obstáculo 
+		cout<<"A lo loco encuentro obstáculo";
+		switch(brujula){
+		case 0:
+		  aux_fil = fil-1;
+		  aux_col = col;
+		  break;
+		case 1:
+		  aux_fil = fil;
+		  aux_col = col+1;
+		  break;
+		case 2:
+		  aux_fil = fil+1;
+		  aux_col = col;
+		  break;
+		case 3:
+		  aux_fil = fil;
+		  aux_col = col-1;
+		  break;
+		}
+		mapaResultado[aux_fil][aux_col]=sensores.terreno[2]; //Actualizo el mapa 
+	        if (sensores.superficie[2]=='a'){ //Si es aldeano, me espero a que se aparte
+		  sigAccion = actIDLE;
+		} else { //Si es muro recalculo el plan
+		  sigAccion = actTURN_R;
+		}
+	      } else{ //Sigo avanzando sin plan
+		cout<<"A lo loco hacia delante";
+		sigAccion = actFORWARD;
+	      }
+	    }
+	        
 	  }
 
 	  ultimaAccion=sigAccion;
@@ -190,7 +300,7 @@ bool ComportamientoJugador::pathFinding (int level, const estado &origen, const 
     return pathFinding_CosteUniforme(origen,destino,plan);
     break;
   case 4: cout << "Busqueda para el reto\n";
-    // Incluir aqui la llamada al algoritmo de búsqueda usado en el nivel 2
+    return pathFinding_Anchura(origen,destino,plan);
     break;
   }
   cout << "Comportamiento sin implementar\n";
@@ -417,78 +527,78 @@ bool ComportamientoJugador::pathFinding_Anchura(const estado &origen, const esta
 }
 
 
-bool ComportamientoJugador::pathFinding_CosteUniforme(const estado &origen, const estado &destino, list<Action> &plan){
-	//Borro la lista
-	cout << "Calculando plan\n";
-	plan.clear();
-	set<estado,ComparaEstados> generados; // Lista de Cerrados
-	priority_queue<nodo, vector<nodo>, CompareCost> cola;											// Lista de Abiertos
+ bool ComportamientoJugador::pathFinding_CosteUniforme(const estado &origen, const estado &destino, list<Action> &plan){
+   //Borro la lista
+   cout << "Calculando plan\n";
+   plan.clear();
+   set<estado,ComparaEstados> generados; // Lista de Cerrados
+   priority_queue<nodo, vector<nodo>, CompareCost> cola;											// Lista de Abiertos
 
-  nodo current;
-	current.st = origen;
-	current.secuencia.empty();
-	current.coste = calculaCoste(current.st);
+   nodo current;
+   current.st = origen;
+   current.secuencia.empty();
+   current.coste = calculaCoste(current.st);
 	
-	cola.push(current);
+   cola.push(current);
 
-  while (!cola.empty() and (current.st.fila!=destino.fila or current.st.columna != destino.columna)){
+   while (!cola.empty() and (current.st.fila!=destino.fila or current.st.columna != destino.columna)){
     
-		cola.pop();
-		generados.insert(current.st);
+     cola.pop();
+     generados.insert(current.st);
 
-		// Generar descendiente de girar a la derecha
-		nodo hijoTurnR = current;
-		hijoTurnR.st.orientacion = (hijoTurnR.st.orientacion+1)%4;
-		if (generados.find(hijoTurnR.st) == generados.end()){
-			hijoTurnR.secuencia.push_back(actTURN_R);
-			hijoTurnR.coste += calculaCoste(hijoTurnR.st);
-			cola.push(hijoTurnR);
+     // Generar descendiente de girar a la derecha
+     nodo hijoTurnR = current;
+     hijoTurnR.st.orientacion = (hijoTurnR.st.orientacion+1)%4;
+     if (generados.find(hijoTurnR.st) == generados.end()){
+       hijoTurnR.secuencia.push_back(actTURN_R);
+       hijoTurnR.coste += calculaCoste(hijoTurnR.st);
+       cola.push(hijoTurnR);
 
-		}
+     }
 
-		// Generar descendiente de girar a la izquierda
-		nodo hijoTurnL = current;
-		hijoTurnL.st.orientacion = (hijoTurnL.st.orientacion+3)%4;
-		if (generados.find(hijoTurnL.st) == generados.end()){
-			hijoTurnL.secuencia.push_back(actTURN_L);
-			hijoTurnL.coste += calculaCoste(hijoTurnL.st);
-			cola.push(hijoTurnL);
-		}
+     // Generar descendiente de girar a la izquierda
+     nodo hijoTurnL = current;
+     hijoTurnL.st.orientacion = (hijoTurnL.st.orientacion+3)%4;
+     if (generados.find(hijoTurnL.st) == generados.end()){
+       hijoTurnL.secuencia.push_back(actTURN_L);
+       hijoTurnL.coste += calculaCoste(hijoTurnL.st);
+       cola.push(hijoTurnL);
+     }
 
-		// Generar descendiente de avanzar
-		nodo hijoForward = current;
-		if (!HayObstaculoDelante(hijoForward.st)){
-			if (generados.find(hijoForward.st) == generados.end()){
-				hijoForward.secuencia.push_back(actFORWARD);
-				hijoForward.coste += calculaCoste(hijoForward.st);
-				cola.push(hijoForward);
-			}
-		}
+     // Generar descendiente de avanzar
+     nodo hijoForward = current;
+     if (!HayObstaculoDelante(hijoForward.st)){
+       if (generados.find(hijoForward.st) == generados.end()){
+	 hijoForward.secuencia.push_back(actFORWARD);
+	 hijoForward.coste += calculaCoste(hijoForward.st);
+	 cola.push(hijoForward);
+       }
+     }
 
-		// Tomo el siguiente valor de la pila
-		if (!cola.empty()){
-			current = cola.top();
-		}
-	}
+     // Tomo el siguiente valor de la pila
+     if (!cola.empty()){
+       current = cola.top();
+     }
+   }
 
-  cout << "Terminada la busqueda\n";
+   cout << "Terminada la busqueda\n";
 
-	if (current.st.fila == destino.fila and current.st.columna == destino.columna){
-		cout << "Cargando el plan\n";
-		plan = current.secuencia;
-		cout << "Longitud del plan: " << plan.size() << endl;
-		PintaPlan(plan);
-		// ver el plan en el mapa
-		VisualizaPlan(origen, plan);
-		return true;
-	}
-	else {
-		cout << "No encontrado plan\n";
-	}
+   if (current.st.fila == destino.fila and current.st.columna == destino.columna){
+     cout << "Cargando el plan\n";
+     plan = current.secuencia;
+     cout << "Longitud del plan: " << plan.size() << endl;
+     PintaPlan(plan);
+     // ver el plan en el mapa
+     VisualizaPlan(origen, plan);
+     return true;
+   }
+   else {
+     cout << "No encontrado plan\n";
+   }
 
 
-	return false;
-}
+   return false;
+ }
 
 
 // Sacar por la términal la secuencia del plan obtenido
