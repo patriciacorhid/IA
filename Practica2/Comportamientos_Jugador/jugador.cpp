@@ -90,12 +90,12 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	    //Comprobación de plan y sensores
 	    cout<<"HayPlan:" << hayPlan <<"\n";
 
-	    for(int i=1; i<4 && hayPlan==false; i++){
+	    for(int i=1; i<16 && hayPlan==false; i++){
 	      cout<<"Sensor "<< i << ": " << sensores.terreno[i] <<"\n";
 	    }
 
 	    //Si tengo cerca una casilla PK hago un plan para ir a por ella
-	    for(int i=1; i<4 && hayPlan==false; i++){
+	    for(int i=1; i<16 && hayPlan==false; i++){
 	      cout<<"en el bucle\n";
 	      if(sensores.terreno[i]=='K'){
 		cout<<"Casilla a la vista\n";
@@ -115,6 +115,101 @@ Action ComportamientoJugador::think(Sensores sensores) {
 		  cout<<"Caso3"<< sensores.terreno[3] <<"\n";
 		  plan.push_back(actFORWARD);
 		  plan.push_back(actTURN_R);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 4:
+		  cout<<"Caso4"<< sensores.terreno[4] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_L);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 5:
+		  cout<<"Caso5"<< sensores.terreno[5] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_L);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 6:
+		  cout<<"Caso6"<< sensores.terreno[6] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 7:
+		  cout<<"Caso7"<< sensores.terreno[7] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_R);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 8:
+		  cout<<"Caso8"<< sensores.terreno[8] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_R);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 9:
+		  cout<<"Caso9"<< sensores.terreno[9] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_L);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 10:
+		  cout<<"Caso10"<< sensores.terreno[10] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_L);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 11:
+		  cout<<"Caso11"<< sensores.terreno[11] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_L);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 12:
+		  cout<<"Caso12"<< sensores.terreno[12] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 13:
+		  cout<<"Caso13"<< sensores.terreno[13] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_R);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 14:
+		  cout<<"Caso14"<< sensores.terreno[14] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_R);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  break;
+		case 15:
+		  cout<<"Caso15"<< sensores.terreno[15] <<"\n";
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actTURN_R);
+		  plan.push_back(actFORWARD);
+		  plan.push_back(actFORWARD);
 		  plan.push_back(actFORWARD);
 		  break;
 		}
