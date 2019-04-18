@@ -219,8 +219,12 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	    //Si hay plan intento seguirlo, siempre que no haya obstáculos 
 	    if (hayPlan and plan.size()>0 and plan.front()==actFORWARD and (sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a')){ //Obstáculo en el plan
 	      cout<<"Obstaculo en el plan\n";
-	      hayPlan = false;
-	      sigAccion = actTURN_R;
+	      if(sensores.superficie[2]=='a'){
+		sigAccion = actIDLE;
+	      } else{
+		hayPlan = false;
+		sigAccion = actTURN_R;
+	      }
 	    } else if(hayPlan and plan.size()>0){ //Siguiendo el plan
 	      cout<<"Siguiendo el plan\n";
 	      sigAccion = plan.front();
