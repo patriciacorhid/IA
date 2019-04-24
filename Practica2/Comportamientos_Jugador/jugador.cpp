@@ -7,7 +7,6 @@
 #include <stack>
 #include <queue>
 
-
 // Este es el método principal que debe contener los 4 Comportamientos_Jugador
 // que se piden en la práctica. Tiene como entrada la información de los
 // sensores y devuelve la acción a realizar.
@@ -223,7 +222,7 @@ Action ComportamientoJugador::think(Sensores sensores) {
 		sigAccion = actIDLE;
 	      } else{
 		hayPlan = false;
-		sigAccion = actTURN_R;
+		sigAccion = dado_obstaculo();
 	      }
 	    } else if(hayPlan and plan.size()>0){ //Siguiendo el plan
 	      cout<<"Siguiendo el plan\n";
@@ -236,10 +235,10 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	    } else if(sensores.terreno[2]=='P' or sensores.terreno[2]=='M' or sensores.terreno[2]=='D' or sensores.superficie[2]=='a'){
 	      //Sin plan me encuentro un obstáculo
 	      cout<<"Obstaculo\n";
-	      sigAccion = actTURN_R;
+	      sigAccion = dado_obstaculo();
 	    } else { //Avanzo sin plan
 	      cout<<"A lo loco\n";
-	      sigAccion = actFORWARD;
+	      sigAccion = dado();
 	    }
 
 	    /*
@@ -366,11 +365,11 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	        if (sensores.superficie[2]=='a'){ //Si es aldeano, me espero a que se aparte
 		  sigAccion = actIDLE;
 		} else { //Si es muro recalculo el plan
-		  sigAccion = actTURN_R;
+		  sigAccion = dado_obstaculo();
 		}
 	      } else{ //Sigo avanzando sin plan
-		cout<<"A lo loco hacia delante";
-		sigAccion = actFORWARD;
+		cout<<"A lo loco";
+		sigAccion = dado();
 	      }
 	    }
 	        
@@ -384,6 +383,35 @@ Action ComportamientoJugador::think(Sensores sensores) {
 	return accion;
 }
 
+//Movimiento aleario cuando no tengo plan
+Action ComportamientoJugador::dado(){
+  int cual = aleatorio(8);
+  Action accion = actIDLE;
+  
+  switch (cual) {
+  case 0: accion = actIDLE; break;
+  case 1: accion = actTURN_L; break;
+  case 2: accion = actTURN_R; break;
+  case 3: case 4: case 5: case 6: case 7: 
+    accion = actFORWARD;
+    break;
+  }
+
+  return accion;
+}
+
+//Movimiento aleario cuando no tengo plan y hay obstáculo delante
+Action ComportamientoJugador::dado_obstaculo(){
+  int cual = aleatorio(2);
+  Action accion = actIDLE;
+  
+  switch (cual) {
+  case 0: accion = actTURN_L; break;
+  case 1: accion = actTURN_R; break;
+  }
+  
+  return accion;
+}
 
 // Llama al algoritmo de busqueda que se usará en cada comportamiento del agente
 // Level representa el comportamiento en el que fue iniciado el agente.
